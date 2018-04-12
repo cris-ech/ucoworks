@@ -48,6 +48,18 @@ class SecurityController extends Controller
         $form = $this->createForm(RegisterUserType::class, $student );
         $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid() ){
+            $password = $userPasswordEncoder->encodePassword($student, $student->getPlainPassword());
+            $student->setPassword($password);
+
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($student);
+            $manager->flush();
+
+            $this->addFlash('positive', 'Usuario creado correctamente');
+            return $this->redirectToRoute('login');
+        }
+
         return $this->render('security/register.html.twig', [
             'form' => $form->createView(),
         ]);
