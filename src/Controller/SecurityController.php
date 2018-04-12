@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Student;
+use App\Form\RegisterUserType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -30,12 +31,25 @@ class SecurityController extends Controller
     }
 
     /**
+     * @Route("/logout",name="logout")
+     */
+
+    public function logout()
+    {
+
+    }
+
+    /**
      * @Route("/register", name="register")
      */
     public function register(Request $request, UserPasswordEncoderInterface $userPasswordEncoder)
     {
+        $student = new Student();
+        $form = $this->createForm(RegisterUserType::class, $student );
+        $form->handleRequest($request);
+
         return $this->render('security/register.html.twig', [
-            'form' => null,
+            'form' => $form->createView(),
         ]);
     }
 }
