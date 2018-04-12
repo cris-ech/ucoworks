@@ -21,7 +21,19 @@ class SubjectController extends Controller
      */
     public function index(SubjectRepository $subjectRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         return $this->render('subject/index.html.twig', ['subjects' => $subjectRepository->findAll()]);
+    }
+
+    /**
+     * @Route("/enrolled", name="subject_enrolled")
+     */
+    public function enrolled()
+    {
+        return $this->render('subject/enrolled.html.twig', [
+           'subjects' => $this->getUser()->getSubjects(),
+        ]);
     }
 
     /**
@@ -52,7 +64,10 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject): Response
     {
-        return $this->render('subject/show.html.twig', ['subject' => $subject]);
+        return $this->render('subject/show.html.twig', [
+            'subject' => $subject,
+            'tasks' => $subject->getTasks(),
+        ]);
     }
 
     /**

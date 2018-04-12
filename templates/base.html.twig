@@ -16,8 +16,10 @@
                         UCOworks
                     </a>
                     <a href="{{ path('homepage') }}" class="item">Inicio</a>
-                    <a href="" class="item">Mis asignaturas</a>
-                    <a href="" class="item">Mis tareas</a>
+                    {% if is_granted('ROLE_USER') %}
+                    <a href="{{ path('subject_enrolled') }}" class="item">Mis asignaturas</a>
+                    <a href="{{ path('logout') }}" class="item">Mis tareas</a>
+                    {% endif %}
                     <div class="right menu">
                         {% if is_granted('ROLE_ADMIN') %}
                         <div class="item">
